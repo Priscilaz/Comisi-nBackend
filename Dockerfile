@@ -19,4 +19,4 @@ COPY --from=build /app/out .
 EXPOSE 80
 
 # Iniciar la aplicación
-ENTRYPOINT ["dotnet", "CourseTracker.dll"]
+ENTRYPOINT ["dotnet", "FastCommissionBack.dll"]
