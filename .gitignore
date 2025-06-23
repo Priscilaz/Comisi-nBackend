@@ -1,0 +1,55 @@
+﻿
+# ============================
+# .NET Core
+# ============================
+# Build output
+bin/
+obj/
+**/bin/
+**/obj/
+out/
+
+# Publish output
+publish/
+**/publish/
+
+# User configuration
+appsettings.Development.json  # Local dev connection strings, secrets
+
+# Visual Studio
+.vs/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains Rider
+.idea/
+
+# NuGet
+*.nupkg
+packages/
+
+# EF Migrations
+**/Migrations/*.SnapShot.cs
+
+# Logs
+*.log
+
+# ============================
+# Node.js
+# ============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
