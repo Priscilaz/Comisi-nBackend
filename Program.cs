@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-          .WithOrigins("http://localhost:3000")
+          .WithOrigins("https://comisi-nfrontend.onrender.com", "http://localhost:3000")
           .AllowAnyMethod()
           .AllowAnyHeader();
     });
