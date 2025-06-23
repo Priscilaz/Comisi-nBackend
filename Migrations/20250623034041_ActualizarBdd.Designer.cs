@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastCommissionBack.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250622214046_DataSeeding")]
-    partial class DataSeeding
+    [Migration("20250623034041_ActualizarBdd")]
+    partial class ActualizarBdd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
