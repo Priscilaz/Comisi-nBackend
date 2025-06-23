@@ -2,6 +2,7 @@
 using FastCommissionBack.Models;
 using FastCommissionBack.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastCommissionBack.Controllers
 {
@@ -25,6 +26,7 @@ namespace FastCommissionBack.Controllers
         public IActionResult GetVentas()
         {
             var ventas = _ctx.Ventas
+                .Include(v => v.Vendedor)
                 .Select(v => new {
                     Fecha = v.Fecha,
                     Vendedor = v.Vendedor.Nombre,
@@ -34,7 +36,7 @@ namespace FastCommissionBack.Controllers
 
             return Ok(ventas);
         }
-
+        
        
         // GET api/comisiones/reglas
         [HttpGet("reglas")]
