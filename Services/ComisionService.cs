@@ -14,7 +14,7 @@ namespace FastCommissionBack.Services
         public ComisionService(IVentaRepository repo, IComisionStrategy strategy)
         {
             _repo = repo;
-            _strategy = strategy;
+            _strategy = CommissionStrategyFactory.Create(StrategyType.ExactMatch); ;
         }
 
         public IEnumerable<object> ObtenerVentasDto()
@@ -53,13 +53,8 @@ namespace FastCommissionBack.Services
                     var total = g.Sum(v =>
                         _strategy.CalcularComision(v.Valor, reglas)
                     );
-
                     var nombre = vendedores.First(x => x.Id == g.Key).Nombre;
-                    return new ComisionDto
-                    {
-                        Vendedor = nombre,
-                        Comision = total
-                    };
+                    return new ComisionDto { Vendedor = nombre, Comision = total };
                 })
                 .ToList();
         }
