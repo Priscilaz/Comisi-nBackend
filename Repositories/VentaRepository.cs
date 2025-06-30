@@ -4,12 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FastCommissionBack.Repositories
 {
-    public interface IVentaRepository
-    {
-        List<Venta> GetVentasEnRango(DateTime inicio, DateTime fin);
-        List<Regla> GetReglas();
-        List<Vendedor> GetVendedores();
-    }
+   
     public class VentaRepository : IVentaRepository
     {
         private readonly AppDbContext _ctx;
