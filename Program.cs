@@ -1,4 +1,5 @@
 using FastCommissionBack.Data;
+using FastCommissionBack.Repositories;
 using FastCommissionBack.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<IVentaRepository, VentaRepository>();
 builder.Services.AddScoped<ComisionService>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
