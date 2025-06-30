@@ -1,21 +1,20 @@
 ﻿using FastCommissionBack.Data;
+using FastCommissionBack.Models;
 using FastCommissionBack.Repositories;
 
 namespace FastCommissionBack.Services
 {
-    public class ComisionDto
-    {
-        public string Vendedor { get; set; }
-        public decimal Comision { get; set; }
-    }
+    
 
     public class ComisionService
     {
         private readonly IVentaRepository _repo;
+        private readonly IComisionStrategy _strategy;
 
-        public ComisionService(IVentaRepository repo)
+        public ComisionService(IVentaRepository repo, IComisionStrategy strategy)
         {
             _repo = repo;
+            _strategy = strategy;
         }
 
         public IEnumerable<object> ObtenerVentasDto()
@@ -52,16 +51,17 @@ namespace FastCommissionBack.Services
                 .Select(g =>
                 {
                     var total = g.Sum(v =>
-                    {
-                        var regla = reglas.FirstOrDefault(r => r.Cantidad == v.Valor);
-                        return regla != null
-                            ? v.Valor * regla.Porcentaje
-                            : 0m;
-                    });
+                        _strategy.CalcularComision(v.Valor, reglas)
+                    );
 
                     var nombre = vendedores.First(x => x.Id == g.Key).Nombre;
-                    return new ComisionDto { Vendedor = nombre, Comision = total };
-                });
+                    return new ComisionDto
+                    {
+                        Vendedor = nombre,
+                        Comision = total
+                    };
+                })
+                .ToList();
         }
     }
 }

@@ -22,7 +22,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IVentaRepository, VentaRepository>();
+builder.Services.AddScoped<IComisionStrategy, ExactMatchStrategy>();
 builder.Services.AddScoped<ComisionService>();
+
 
 builder.Services.AddControllers();
 
