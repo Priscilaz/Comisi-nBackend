@@ -1,4 +1,5 @@
 ﻿using FastCommissionBack.Data;
+using FastCommissionBack.Repositories;
 
 namespace FastCommissionBack.Services
 {
@@ -10,26 +11,43 @@ namespace FastCommissionBack.Services
 
     public class ComisionService
     {
-        private readonly AppDbContext _ctx;
+        private readonly IVentaRepository _repo;
 
-        public ComisionService(AppDbContext ctx)
+        public ComisionService(IVentaRepository repo)
         {
-            _ctx = ctx;
+            _repo = repo;
+        }
+
+        public IEnumerable<object> ObtenerVentasDto()
+        {
+            return _repo
+                .GetVentasEnRango(DateTime.MinValue, DateTime.MaxValue)
+                .Select(v => new {
+                    Fecha = v.Fecha,
+                    Vendedor = v.Vendedor.Nombre,
+                    Monto = v.Valor
+                })
+                .ToList();
+        }
+
+        public IEnumerable<object> ObtenerReglasDto()
+        {
+            return _repo
+                .GetReglas()
+                .Select(r => new {
+                    Porcentaje = r.Porcentaje,
+                    Cantidad = r.Cantidad
+                })
+                .ToList();
         }
 
         public IEnumerable<ComisionDto> CalcularComisiones(DateTime inicio, DateTime fin)
         {
-            // 1) Traer ventas en el rango
-            var ventas = _ctx.Ventas
-                .Where(v => v.Fecha >= inicio && v.Fecha <= fin)
-                .ToList();
+            var ventas = _repo.GetVentasEnRango(inicio, fin);
+            var reglas = _repo.GetReglas();
+            var vendedores = _repo.GetVendedores();
 
-            // 2) Traer reglas y vendedores a memoria
-            var reglas = _ctx.Reglas.ToList();
-            var vendedores = _ctx.Vendedores.ToList();
-
-            // 3) Agrupar por vendedor y aplicar regla exacta
-            var resultado = ventas
+            return ventas
                 .GroupBy(v => v.VendedorId)
                 .Select(g =>
                 {
@@ -44,8 +62,6 @@ namespace FastCommissionBack.Services
                     var nombre = vendedores.First(x => x.Id == g.Key).Nombre;
                     return new ComisionDto { Vendedor = nombre, Comision = total };
                 });
-
-            return resultado;
         }
     }
 }
